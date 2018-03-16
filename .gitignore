@@ -1,4 +1,8 @@
 /*
+!libs/
+!release/
+!src/
 !.gitignore
 !LICENSE
 !README.md
+!tool-ip.php
