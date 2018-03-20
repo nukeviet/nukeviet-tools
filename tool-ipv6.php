@@ -48,7 +48,7 @@ if (!is_dir(NV_ROOTDIR . '/release/ip6')) {
 }
 
 $inputFileType = 'Csv';
-$inputFileName = NV_ROOTDIR . '/libs/ip/GeoLite2-Country-Blocks-IPv4.csv';
+$inputFileName = NV_ROOTDIR . '/libs/ip/GeoLite2-Country-Blocks-IPv6.csv';
 
 // Số row mỗi chunk
 $chunkSize = 10000;
@@ -73,18 +73,10 @@ try {
     $maxRow = $sheetData->getHighestRow();
 
     $loaded_file = array();
-    $loaded_file_reverse = array();
 
     echo ('<pre><code>');
 
     if ($maxRow <= 1) {
-        // Ghi lại các file không có từ 0 - 255
-        for ($i = 0; $i <= 255; $i++) {
-            if (!file_exists(NV_ROOTDIR . '/release/ip/' . $i . '.php')) {
-                $file_content = "<?php\n\n\$ranges = array();\n";
-                file_put_contents(NV_ROOTDIR . '/release/ip/' . $i . '.php', $file_content, LOCK_EX);
-            }
-        }
         echo ('Kết thúc');
     } else {
         for ($i = $startRow; $i <= $maxRow; $i++) {
@@ -94,49 +86,21 @@ try {
             if (isset($array_geo_info[$geo_id])) {
                 list($range, $netmask) = explode('/', $ip_range, 2);
                 if (!empty($netmask)) {
-                    $x = explode('.', $range);
-                    while (count($x) < 4) {
-                        $x[] = '0';
-                    }
-                    list($a, $b, $c, $d) = $x;
-                    //$range = sprintf("%u.%u.%u.%u", empty($a) ? '0' : $a, empty($b) ? '0' : $b, empty($c) ? '0' : $c, empty($d) ? '0' : $d);
+                    $x = explode(':', $range);
+                    $a = $x[0];
 
-                    $ip_start = ($a * 16777216) + ($b * 65536) + ($c * 256) + ($d);
-                    $ip_end = $ip_start + pow(2, 32 - intval($netmask)) - 1;
-
-                    if (!isset($loaded_file[$a]) and file_exists(NV_ROOTDIR . '/release/ip/' . $a . '.php')) {
+                    if (!isset($loaded_file[$a]) and file_exists(NV_ROOTDIR . '/release/ip6/' . $a . '.php')) {
                         $ranges = array();
-                        $ranges_reverse = array();
-                        include NV_ROOTDIR . '/release/ip/' . $a . '.php';
+                        include NV_ROOTDIR . '/release/ip6/' . $a . '.php';
                         $loaded_file[$a] = $ranges;
-                        foreach ($ranges as $rkey => $rval) {
-                            $ranges_reverse[$rval[0]] = array($rkey, $rval[1]);
-                        }
-                        $loaded_file_reverse[$a] = $ranges_reverse;
                     } elseif (isset($loaded_file[$a])) {
                         $ranges = $loaded_file[$a];
-                        $ranges_reverse = $loaded_file_reverse[$a];
                     } else {
                         $ranges = array();
-                        $ranges_reverse = array();
                     }
 
-                    // Sprinf chuyển thành chỗi
-                    // 32 bit vượt quá integer
-                    $ip_sbefore = sprintf("%u", $ip_start - 1);
-                    $ip_start = sprintf("%u", $ip_start);
-                    $ip_end = sprintf("%u", $ip_end);
-
-                    if (isset($ranges_reverse[$ip_sbefore]) and $ranges_reverse[$ip_sbefore][1] == $array_geo_info[$geo_id]) {
-                        $ip_start = $ranges_reverse[$ip_sbefore][0];
-                        unset($ranges_reverse[$ip_sbefore]);
-                    }
-
-                    $ranges[$ip_start] = array($ip_end, $array_geo_info[$geo_id]);
-                    $ranges_reverse[$ip_end] = array($ip_start, $array_geo_info[$geo_id]);
-
+                    $ranges[$ip_range] = $array_geo_info[$geo_id];
                     $loaded_file[$a] = $ranges;
-                    $loaded_file_reverse[$a] = $ranges_reverse;
                 } else {
                     trigger_error('IP range invalid on line ' . $startRow, 256);
                 }
@@ -147,8 +111,8 @@ try {
     }
 
     foreach ($loaded_file as $fname => $fdata) {
-        $file_content = "<?php\n\n" . NV_FILEHEAD . "\n\n\$ranges = " . nv_print_variable_ip($fdata) . ";\n";
-        file_put_contents(NV_ROOTDIR . '/release/ip/' . $fname . '.php', $file_content, LOCK_EX);
+        $file_content = "<?php\n\n" . NV_FILEHEAD . "\n\n\$ranges = " . nv_print_variable_ip6($fdata) . ";\n";
+        file_put_contents(NV_ROOTDIR . '/release/ip6/' . $fname . '.php', $file_content, LOCK_EX);
     }
 
     echo ('</code></pre>');

@@ -11,25 +11,26 @@
 if (!defined('NV_MAINFILE'))
     die('Stop!!!');
 
-$geoinfoFile = NV_ROOTDIR . '/libs/countryInfo.txt';
+$geoinfoFile = NV_ROOTDIR . '/libs/ip/GeoLite2-Country-Locations-en.csv';
 
 if (!file_exists($geoinfoFile)) {
-    trigger_error('No file libs/countryInfo.txt', 256);
+    trigger_error('No file libs/libs/ip/GeoLite2-Country-Locations-en.csv', 256);
 }
 
 $array_geo_info = array();
 $handle = fopen($geoinfoFile, 'r');
 
+$i = 0;
 while (($buffer = fgets($handle, 4096)) !== false) {
     $buffer = trim($buffer);
-    if (strpos($buffer, '#') === 0) {
+    if (strpos($buffer, '#') === 0 or $i++ == 0) {
         continue;
     }
-    $buffer = explode("\t", $buffer);
-    if (isset($buffer[16])) {
-        $array_geo_info[$buffer[16]] = $buffer[0];
+    $buffer = explode(",", $buffer);
+    if (!empty($buffer[4]) and !empty($buffer[0])) {
+        $array_geo_info[$buffer[0]] = $buffer[4];
     } else {
-        trigger_error('Error: countryInfo.txt get geoid false', 256);
+        //trigger_error('Error: countryInfo.txt get geoid false', 256);
     }
 }
 if (!feof($handle)) {
