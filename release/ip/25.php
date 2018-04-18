@@ -2,14 +2,8 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC <contact@vinades.vn>
- * @Copyright (C) 2018 VINADES.,JSC. All rights reserved
- * @License GNU/GPL version 2 or any later version
- * @Createdate Tue, 20 Mar 2018 02:10:20 GMT
+ * @This product includes GeoLite2 data created by MaxMind, available from http://www.maxmind.com
+ * @Createdate Wed, 18 Apr 2018 03:19:59 GMT
  */
 
-$ranges = array(
-    419430400 => array(426470229, 'GB'),
-    426470230 => array(426470230, 'IT'),
-    426470231 => array(436207615, 'GB')
-);
+$ranges=array(419430400=>array(426470229,'GB'),426470230=>array(426470230,'IT'),426470231=>array(436207615,'GB'));

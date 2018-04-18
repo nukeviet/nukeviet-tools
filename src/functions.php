@@ -11,6 +11,8 @@
 if (!defined('NV_MAINFILE'))
     die('Stop!!!');
 
+define('IP_FILEHEAD', "/**\n * @Project NUKEVIET 4.x\n * @This product includes GeoLite2 data created by MaxMind, available from http://www.maxmind.com\n * @Createdate " . gmdate("D, d M Y H:i:s") . " GMT\n */\n");
+
 /**
  * nv_print_variable_ip()
  *
@@ -19,6 +21,12 @@ if (!defined('NV_MAINFILE'))
  */
 function nv_print_variable_ip($var_array)
 {
+    $data = array();
+    foreach ($var_array as $k => $v) {
+        $data[] = sprintf("%u", $k) . '=>array(' . sprintf("%u", $v[0]) . ',\'' . $v[1] . '\')';
+    }
+    $ct = 'array(' . implode(',', $data) . ')';
+    /*
     $ct = print_r($var_array, true);
     $ct = str_replace('\r\n', '\n', $ct);
     $ct = preg_replace('/Array[\n\t\s]+\(/', "array(\n", $ct);
@@ -29,7 +37,7 @@ function nv_print_variable_ip($var_array)
     $ct = str_replace("\n\n", "\n", $ct);
     $ct = preg_replace('/\)\,([\n\s]+)\)/', ')\\1)', $ct);
     $ct = trim($ct, "\n");
-
+    */
     return $ct;
 }
 
@@ -41,6 +49,12 @@ function nv_print_variable_ip($var_array)
  */
 function nv_print_variable_ip6($var_array)
 {
+    $data = array();
+    foreach ($var_array as $k => $v) {
+        $data[] = '\'' . $k . '\'' . '=>\'' . $v . '\'';
+    }
+    $ct = 'array(' . implode(',', $data) . ')';
+    /*
     $ct = print_r($var_array, true);
     $ct = str_replace('\r\n', '\n', $ct);
     $ct = preg_replace('/Array[\n\t\s]+\(/', "array(\n", $ct);
@@ -51,6 +65,6 @@ function nv_print_variable_ip6($var_array)
 
     $ct = str_replace("\n\n", "\n", $ct);
     $ct = trim($ct, "\n");
-
+    */
     return $ct;
 }

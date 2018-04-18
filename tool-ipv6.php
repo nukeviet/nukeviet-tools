@@ -111,7 +111,7 @@ try {
     }
 
     foreach ($loaded_file as $fname => $fdata) {
-        $file_content = "<?php\n\n" . NV_FILEHEAD . "\n\n\$ranges = " . nv_print_variable_ip6($fdata) . ";\n";
+        $file_content = "<?php\n\n" . IP_FILEHEAD . "\n\$ranges = " . nv_print_variable_ip6($fdata) . ";\n";
         file_put_contents(NV_ROOTDIR . '/release/ip6/' . $fname . '.php', $file_content, LOCK_EX);
     }
 

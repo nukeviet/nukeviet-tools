@@ -81,7 +81,7 @@ try {
         // Ghi lại các file không có từ 0 - 255
         for ($i = 0; $i <= 255; $i++) {
             if (!file_exists(NV_ROOTDIR . '/release/ip/' . $i . '.php')) {
-                $file_content = "<?php\n\n\$ranges = array();\n";
+                $file_content = "<?php\n\n" . IP_FILEHEAD . "\n\$ranges=array();\n";
                 file_put_contents(NV_ROOTDIR . '/release/ip/' . $i . '.php', $file_content, LOCK_EX);
             }
         }
@@ -121,11 +121,7 @@ try {
                         $ranges_reverse = array();
                     }
 
-                    // Sprinf chuyển thành chỗi
-                    // 32 bit vượt quá integer
-                    $ip_sbefore = sprintf("%u", $ip_start - 1);
-                    $ip_start = sprintf("%u", $ip_start);
-                    $ip_end = sprintf("%u", $ip_end);
+                    $ip_sbefore = $ip_start - 1;
 
                     if (isset($ranges_reverse[$ip_sbefore]) and $ranges_reverse[$ip_sbefore][1] == $array_geo_info[$geo_id]) {
                         $ip_start = $ranges_reverse[$ip_sbefore][0];
@@ -147,7 +143,7 @@ try {
     }
 
     foreach ($loaded_file as $fname => $fdata) {
-        $file_content = "<?php\n\n" . NV_FILEHEAD . "\n\n\$ranges = " . nv_print_variable_ip($fdata) . ";\n";
+        $file_content = "<?php\n\n" . IP_FILEHEAD . "\n\$ranges=" . nv_print_variable_ip($fdata) . ";\n";
         file_put_contents(NV_ROOTDIR . '/release/ip/' . $fname . '.php', $file_content, LOCK_EX);
     }
 
