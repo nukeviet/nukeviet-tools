@@ -174,10 +174,8 @@ foreach ($hook_sys as $tag => $data) {
     echo("  * [[<a style=\"text-decoration: none;\" href=\"?f=" . urlencode($data['file']) . "&amp;c=" . urlencode($data['code']) . "#highlight\" target=\"_blank\">codex:hooks-reference:" . $tag . "|" . $tag . "</a>]]\n");
 }
 
-echo("\n");
-
 foreach ($hook_modules as $module => $datas) {
-    echo("<h2 style=\"margin:0;padding:0;\">===== Hook của module " . $module . " =====</h2>\n");
+    echo("\n<h2 style=\"margin:0;padding:0;\">===== Hook của module " . $module . " =====</h2>\n");
     foreach ($datas as $tag => $data) {
         echo("  * [[<a style=\"text-decoration: none;\" href=\"?f=" . urlencode($data['file']) . "&amp;c=" . urlencode($data['code']) . "#highlight\" target=\"_blank\">codex:hooks-reference:" . $module . ":" . $tag . "|" . $tag . "</a>]]\n");
     }
