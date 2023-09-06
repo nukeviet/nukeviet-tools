@@ -1,11 +1,11 @@
 # Các công cụ
 
-1 ConvertAll.php
-2 ConvertLangBlock.php
-3 CheckOldLang.php
-4 CheckNewLangError.php
-5 CheckOther.php
-6 LangCompare.php
+1. ConvertAll.php
+2. ConvertLangBlock.php
+3. CheckOldLang.php
+4. CheckNewLangError.php
+5. CheckOther.php
+6. LangCompare.php
 
 ### siteinfo.php
 
