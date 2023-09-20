@@ -24,7 +24,6 @@ Nếu block đặt trên module đó tức `$module_file == $modfile` thì lang 
 Nếu block đặt trên modue khác thì
 
 ```php
-$nv_Lang->changeLang();
 $nv_Lang->loadModule($modfile, false, true);
 ```
 
@@ -33,3 +32,11 @@ Và lang xuất ra là
 ```php
 \NukeViet\Core\Language::$tmplang_module
 ```
+
+Xuất lang xong thì
+
+```php
+$nv_Lang->changeLang();
+```
+
+Để bỏ lang tạm đi
