@@ -63,6 +63,11 @@ foreach ($allfiles as $filepath) {
         $check++;
     }
 
+    // Kiểm tra những chỗ có class upload
+    if (preg_match('/\-\>setLanguage[\s]*\(/i', $filecontents)) {
+        $check++;
+    }
+
     if ($check) {
         echo 'Check: ' . $filepath . "\n";
     }
